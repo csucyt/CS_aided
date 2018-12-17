@@ -1,7 +1,7 @@
 % A random Gaussian matrix of size M*Tp is used for training signal.The
 % M-SP algorithm recovers the channel incorporating the previous support
 % information.
-function [NMSE, NBG] = M_SP_measure(M,k,ks,Tp,SNR,L)
+function [NMSE, NBG] = M_SP_measure(M,k,ks,Tp,SNR,L,kse)
 
 % Input:
 %      M    :  天线数量
@@ -9,7 +9,8 @@ function [NMSE, NBG] = M_SP_measure(M,k,ks,Tp,SNR,L)
 %      ks   :  反映信道变化快慢
 %      Tp   :  导频数量
 %      SNR  :  信噪比
-%      L    :  块衰落信道数量
+%      L    :  块衰落信道数量(可选参数）
+%      kse  :  mismatched parameter（可选参数，设置这个参数必须设置L)
 % Output:
 %      NMSE :       Normailized mean squared error
 %      NBG  :       Normalized beamforming gain
@@ -36,6 +37,9 @@ T0 = realIndex;
 
 for i = 1 : L
     y = sqrt(pul)*XT.'*conj(Pshi)*s+mcrandn(Tp,1);
+    if nargin == 7
+        sc = k-2*kse;
+    end
     [s_,T0] = M_SP(y,sqrt(pul)*XT.'*conj(Pshi),k,sc,T0,1,1e-15);
     h_ = Pshi*s_;
     NMSE = NMSE + (norm(h-h_)/norm(h))^2;

@@ -67,3 +67,22 @@ xlabel('SNR(dB)')
 ylabel('Normalized mean squared error(NMSE)')
 legend('Genie-aided LS','Static LS','OMP','CS-aided','M-SP')
 title({'NMSE versus SNR with M=100,k=40,ks=3,and Tp=60'})
+
+Tp = 80;
+SNR = 20;
+kse = 1:1:10;
+len = length(kse);
+for i = 1:len
+    [NMSE_omp(i),NBG_omp(i)] = omp_measure(M,k,ks,Tp,SNR,100,kse(i));
+    [NMSE_CSA(i),NBG_CSA(i)] = CS_aided(M,k,ks,Tp,SNR,100,kse(i));
+    [NMSE_MSP(i),NBG_MSP(i)] = M_SP_measure(M,k,ks,Tp,SNR,100,kse(i));
+end
+figure(4)
+plot(kse,NMSE_omp,'>-',kse,NMSE_CSA,'o-',...
+    kse,NMSE_MSP,'h-')
+axis([1 10 0 0.7])
+grid on
+xlabel('Assumed size of common support ks')
+ylabel('Normalized mean squared error(NMSE)')
+legend('OMP','CS-aided','M-SP')
+title({'NMSE versus the mismatched parameter k_s^e with M=100,k=40,ks=3,and SNR=20'})

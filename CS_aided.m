@@ -4,7 +4,7 @@
 % Utilizing a conventional least squares approach and a CS technique
 % simultaneously.
 
-function [NMSE, NBG] = CS_aided(M,k,ks,Tp,SNR,L)
+function [NMSE, NBG] = CS_aided(M,k,ks,Tp,SNR,L,kse)
 
 % Input:
 %      M    :  天线数量
@@ -12,7 +12,8 @@ function [NMSE, NBG] = CS_aided(M,k,ks,Tp,SNR,L)
 %      ks   :  反映信道变化快慢
 %      Tp   :  导频数量
 %      SNR  :  信噪比
-%      L    :  块衰落信道数量
+%      L    :  块衰落信道数量(可选参数）
+%      kse  :  mismatched parameter（可选参数，设置这个参数必须设置L)
 % Output:
 %      NMSE :       Normailized mean squared error
 %      NBG  :       Normalized beamforming gain
@@ -32,7 +33,7 @@ pul = 10^(SNR/10);
 NMSE = 0;
 NBG = 0;
 Xd_ = eye(k);
-index_d = realIndex;     
+index_d = realIndex;
 index_s = setdiff(1:M,index_d);
 s_ = zeros(M,1);
 
@@ -47,7 +48,11 @@ else
         ys = sqrt(pul)*s(index_s)'*Phi'+mcrandn(1,Tp-k);
         ys = ys.';
         sd_ = Xd_*conj(yd)/sqrt(pul);
-        ss_ = omp(sqrt(pul)*conj(Phi),ys,ks);
+        if nargin == 7
+            ss_ = omp(sqrt(pul)*conj(Phi),ys,kse);
+        else
+            ss_ = omp(sqrt(pul)*conj(Phi),ys,ks);
+        end
         ss_ = conj(ss_);
         s_(index_d) = sd_;
         s_(index_s) = ss_;
