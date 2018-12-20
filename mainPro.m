@@ -33,7 +33,7 @@ xlabel('Length of training sequence T_p')
 ylabel('Normalized mean squared error(NMSE)')
 legend('Genie-aided LS','Static LS','OMP','CS-aided','M-SP')
 title({'NMSE versus the length of the training sequence with M=100,',...
-    'k=40,...ks=3,and SNR=20dB'});
+    'k=40,ks=3,and SNR=20dB'});
 
 figure(2)
 plot(Tp,NBG_GA,'*-',Tp,NBG_SLS,'d-',...
@@ -45,7 +45,7 @@ xlabel('Length of training sequence T_p')
 ylabel('Nromalized beamforming gain')
 legend('Genie-aided LS','Static LS','OMP','CS-aided','M-SP')
 title({'Normalized beamforming gain versus the length of the training,',...
-    'sequence with M=100,k=40,...ks=3,and SNR=20dB'});
+    'sequence with M=100,k=40,ks=3,and SNR=20dB'});
 
 Tp = 60;
 SNR = 0:5:30;
